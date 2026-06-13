@@ -1,22 +1,9 @@
-import { isSupabaseConfigured, supabase } from '../supabaseClient';
 import { normalizeCurriculo } from '../models/curriculoModel';
+import { getCurriculos, insertCurriculo } from '../services/curriculoService';
 import { isSafeWebAddress, isValidEmail } from '../utils/validators';
 
 export async function listCurriculos() {
-  if (!isSupabaseConfigured) {
-    throw new Error('Configure as variaveis do Supabase no arquivo .env.');
-  }
-
-  const { data, error } = await supabase
-    .from('curriculos')
-    .select('id, nome, email, telefone, endereco_web, experiencia, criado_em')
-    .order('criado_em', { ascending: false });
-
-  if (error) {
-    throw error;
-  }
-
-  return data || [];
+  return getCurriculos();
 }
 
 export function validateCurriculo(form) {
@@ -46,10 +33,6 @@ export function validateCurriculo(form) {
 }
 
 export async function saveCurriculo(form) {
-  if (!isSupabaseConfigured) {
-    throw new Error('Configure as variaveis do Supabase no arquivo .env.');
-  }
-
   const validationError = validateCurriculo(form);
 
   if (validationError) {
@@ -57,15 +40,5 @@ export async function saveCurriculo(form) {
   }
 
   const curriculo = normalizeCurriculo(form);
-  const { error } = await supabase.from('curriculos').insert({
-    nome: curriculo.nome,
-    telefone: curriculo.telefone || null,
-    email: curriculo.email,
-    endereco_web: curriculo.endereco_web || null,
-    experiencia: curriculo.experiencia,
-  });
-
-  if (error) {
-    throw error;
-  }
+  await insertCurriculo(curriculo);
 }
