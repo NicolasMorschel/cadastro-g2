@@ -28,3 +28,8 @@ SQL:
 ```text
 supabase/schema.sql
 ```
+
+## Autores
+
+Bernardo dos Santos Brussius
+Nicolas Viçoza Morschel
