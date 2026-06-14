@@ -1,5 +1,6 @@
 const validationMessages = [
   'Informe o nome.',
+  'Informe um nome valido.',
   'Informe o e-mail.',
   'Informe um e-mail valido.',
   'Informe um telefone valido.',

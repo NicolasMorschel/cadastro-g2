@@ -2,6 +2,12 @@ export function isValidEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+export function isValidName(name) {
+  const trimmed = name.trim();
+
+  return trimmed.length >= 2 && !/[<>]/.test(trimmed);
+}
+
 export function isValidPhone(phone) {
   const trimmed = phone.trim();
 

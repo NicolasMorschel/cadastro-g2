@@ -9,6 +9,10 @@ create table if not exists public.curriculos (
   constraint curriculos_nome_obrigatorio check (length(trim(nome)) > 0),
   constraint curriculos_email_obrigatorio check (length(trim(email)) > 0),
   constraint curriculos_experiencia_obrigatoria check (length(trim(experiencia)) > 0),
+  constraint curriculos_nome_formato check (
+    char_length(trim(nome)) >= 2
+    and nome !~ '[<>]'
+  ),
   constraint curriculos_nome_tamanho check (char_length(nome) <= 120),
   constraint curriculos_telefone_tamanho check (telefone is null or char_length(telefone) <= 30),
   constraint curriculos_telefone_formato check (
@@ -64,6 +68,8 @@ for insert
 to anon
 with check (
   length(trim(nome)) > 0
+  and char_length(trim(nome)) >= 2
+  and nome !~ '[<>]'
   and length(trim(email)) > 0
   and length(trim(experiencia)) > 0
   and char_length(nome) <= 120
