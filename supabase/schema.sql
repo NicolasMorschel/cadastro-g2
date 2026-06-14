@@ -26,8 +26,7 @@ create table if not exists public.curriculos (
   ),
   constraint curriculos_url_segura check (
     endereco_web is null
-    or endereco_web like 'http://%'
-    or endereco_web like 'https://%'
+    or endereco_web ~* '^https?://[^[:space:]/]+\.[^[:space:]/]+'
   )
 );
 
@@ -82,8 +81,7 @@ with check (
   and email ~* '^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$'
   and (
     endereco_web is null
-    or endereco_web like 'http://%'
-    or endereco_web like 'https://%'
+    or endereco_web ~* '^https?://[^[:space:]/]+\.[^[:space:]/]+'
   )
 );
 

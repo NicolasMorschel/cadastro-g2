@@ -25,7 +25,10 @@ export function isSafeWebAddress(value) {
 
   try {
     const url = new URL(trimmed);
-    return url.protocol === 'http:' || url.protocol === 'https:';
+    const hasSafeProtocol = url.protocol === 'http:' || url.protocol === 'https:';
+    const hasValidHost = url.hostname.includes('.') && !url.hostname.includes(' ');
+
+    return hasSafeProtocol && hasValidHost;
   } catch {
     return false;
   }
