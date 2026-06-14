@@ -11,6 +11,13 @@ create table if not exists public.curriculos (
   constraint curriculos_experiencia_obrigatoria check (length(trim(experiencia)) > 0),
   constraint curriculos_nome_tamanho check (char_length(nome) <= 120),
   constraint curriculos_telefone_tamanho check (telefone is null or char_length(telefone) <= 30),
+  constraint curriculos_telefone_formato check (
+    telefone is null
+    or (
+      telefone ~ '^[0-9()+\-\s]+$'
+      and length(regexp_replace(telefone, '\D', '', 'g')) between 10 and 13
+    )
+  ),
   constraint curriculos_email_tamanho check (char_length(email) <= 160),
   constraint curriculos_url_tamanho check (endereco_web is null or char_length(endereco_web) <= 200),
   constraint curriculos_experiencia_tamanho check (char_length(experiencia) <= 2000),
@@ -62,6 +69,13 @@ with check (
   and length(trim(experiencia)) > 0
   and char_length(nome) <= 120
   and (telefone is null or char_length(telefone) <= 30)
+  and (
+    telefone is null
+    or (
+      telefone ~ '^[0-9()+\-\s]+$'
+      and length(regexp_replace(telefone, '\D', '', 'g')) between 10 and 13
+    )
+  )
   and char_length(email) <= 160
   and (endereco_web is null or char_length(endereco_web) <= 200)
   and char_length(experiencia) <= 2000

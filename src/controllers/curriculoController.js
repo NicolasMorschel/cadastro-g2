@@ -1,6 +1,6 @@
 import { normalizeCurriculo } from '../models/curriculoModel';
 import { getCurriculos, insertCurriculo } from '../services/curriculoService';
-import { isSafeWebAddress, isValidEmail } from '../utils/validators';
+import { isSafeWebAddress, isValidEmail, isValidPhone } from '../utils/validators';
 
 export async function listCurriculos() {
   return getCurriculos();
@@ -19,6 +19,10 @@ export function validateCurriculo(form) {
 
   if (!isValidEmail(curriculo.email)) {
     return 'Informe um e-mail valido.';
+  }
+
+  if (!isValidPhone(curriculo.telefone)) {
+    return 'Informe um telefone valido.';
   }
 
   if (!curriculo.experiencia) {
