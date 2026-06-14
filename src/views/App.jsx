@@ -4,6 +4,7 @@ import {
   listCurriculos,
   saveCurriculo,
 } from '../controllers/curriculoController';
+import { getLoadErrorMessage, getSaveErrorMessage } from '../utils/errorMessages';
 import { CurriculoDetails } from './CurriculoDetails.jsx';
 import { CurriculoForm } from './CurriculoForm.jsx';
 import { CurriculoList } from './CurriculoList.jsx';
@@ -26,7 +27,7 @@ export function App() {
     try {
       setCurriculos(await listCurriculos());
     } catch {
-      setMessage('Nao foi possivel carregar os curriculos.');
+      setMessage(getLoadErrorMessage());
     }
 
     setLoading(false);
@@ -63,7 +64,7 @@ export function App() {
       await loadCurriculos();
       setScreen('list');
     } catch (error) {
-      setMessage(error.message || 'Nao foi possivel salvar o cadastro.');
+      setMessage(getSaveErrorMessage(error));
     }
   }
 
