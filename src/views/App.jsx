@@ -69,16 +69,16 @@ export function App() {
   }
 
   return (
-    <main className="container">
-      <header>
-        <h1>Cadastro de Curriculos</h1>
-        <nav>
-          <button type="button" onClick={goToList}>Listagem</button>
-          <button type="button" onClick={goToForm}>Novo cadastro</button>
+    <main className="container py-4">
+      <header className="mb-4">
+        <h1 className="mb-3">Cadastro de Curriculos</h1>
+        <nav className="d-flex gap-2">
+          <button type="button" className="btn btn-secondary btn-sm" onClick={goToList}>Listagem</button>
+          <button type="button" className="btn btn-primary btn-sm" onClick={goToForm}>Novo cadastro</button>
         </nav>
       </header>
 
-      {message && <p className="message">{message}</p>}
+      {message && <p className="text-danger">{message}</p>}
 
       {screen === 'list' && (
         <CurriculoList

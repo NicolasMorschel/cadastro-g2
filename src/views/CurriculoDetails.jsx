@@ -3,20 +3,20 @@ import React from 'react';
 export function CurriculoDetails({ curriculo }) {
   return (
     <section>
-      <h2>Consulta do curriculo</h2>
+      <h2 className="mb-3">Consulta do curriculo</h2>
 
-      <dl>
-        <dt>Nome</dt>
-        <dd>{curriculo.nome}</dd>
+      <dl className="row">
+        <dt className="col-sm-3">Nome</dt>
+        <dd className="col-sm-9">{curriculo.nome}</dd>
 
-        <dt>Telefone</dt>
-        <dd>{curriculo.telefone || 'Nao informado'}</dd>
+        <dt className="col-sm-3">Telefone</dt>
+        <dd className="col-sm-9">{curriculo.telefone || 'Nao informado'}</dd>
 
-        <dt>E-mail</dt>
-        <dd>{curriculo.email}</dd>
+        <dt className="col-sm-3">E-mail</dt>
+        <dd className="col-sm-9">{curriculo.email}</dd>
 
-        <dt>Endereco WEB</dt>
-        <dd>
+        <dt className="col-sm-3">Endereco WEB</dt>
+        <dd className="col-sm-9">
           {curriculo.endereco_web ? (
             <a href={curriculo.endereco_web} target="_blank" rel="noreferrer noopener">
               {curriculo.endereco_web}
@@ -26,8 +26,8 @@ export function CurriculoDetails({ curriculo }) {
           )}
         </dd>
 
-        <dt>Experiencia profissional</dt>
-        <dd>{curriculo.experiencia}</dd>
+        <dt className="col-sm-3">Experiencia profissional</dt>
+        <dd className="col-sm-9">{curriculo.experiencia}</dd>
       </dl>
     </section>
   );

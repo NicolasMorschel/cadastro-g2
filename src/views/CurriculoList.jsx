@@ -3,7 +3,7 @@ import React from 'react';
 export function CurriculoList({ curriculos, loading, onDetails }) {
   return (
     <section>
-      <h2>Curriculos cadastrados</h2>
+      <h2 className="mb-3">Curriculos cadastrados</h2>
 
       {loading && <p>Carregando...</p>}
 
@@ -12,7 +12,7 @@ export function CurriculoList({ curriculos, loading, onDetails }) {
       )}
 
       {!loading && curriculos.length > 0 && (
-        <table>
+        <table className="table table-bordered">
           <thead>
             <tr>
               <th>Nome</th>
@@ -26,7 +26,7 @@ export function CurriculoList({ curriculos, loading, onDetails }) {
                 <td>{curriculo.nome}</td>
                 <td>{curriculo.email}</td>
                 <td>
-                  <button type="button" onClick={() => onDetails(curriculo)}>
+                  <button type="button" className="btn btn-outline-primary btn-sm" onClick={() => onDetails(curriculo)}>
                     Consultar
                   </button>
                 </td>
