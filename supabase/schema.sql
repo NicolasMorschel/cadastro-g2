@@ -93,3 +93,10 @@ with check (
 
 create index if not exists curriculos_criado_em_idx
 on public.curriculos (criado_em desc);
+
+create unique index if not exists curriculos_email_unico_idx
+on public.curriculos (lower(email));
+
+create unique index if not exists curriculos_telefone_unico_idx
+on public.curriculos ((regexp_replace(telefone, '[^0-9]', '', 'g')))
+where telefone is not null;

@@ -6,6 +6,52 @@ function checkSupabaseConfig() {
   }
 }
 
+function onlyNumbers(value) {
+  return value.replace(/\D/g, '');
+}
+
+async function checkDuplicateEmail(email) {
+  const { data, error } = await supabase
+    .from('curriculos')
+    .select('id, email');
+
+  if (error) {
+    throw error;
+  }
+
+  const hasDuplicate = data.some((curriculo) => (
+    curriculo.email.toLowerCase() === email.toLowerCase()
+  ));
+
+  if (hasDuplicate) {
+    throw new Error('Ja existe um curriculo com esse e-mail.');
+  }
+}
+
+async function checkDuplicatePhone(phone) {
+  if (!phone) {
+    return;
+  }
+
+  const phoneNumbers = onlyNumbers(phone);
+  const { data, error } = await supabase
+    .from('curriculos')
+    .select('id, telefone')
+    .not('telefone', 'is', null);
+
+  if (error) {
+    throw error;
+  }
+
+  const hasDuplicate = data.some((curriculo) => (
+    onlyNumbers(curriculo.telefone || '') === phoneNumbers
+  ));
+
+  if (hasDuplicate) {
+    throw new Error('Ja existe um curriculo com esse telefone.');
+  }
+}
+
 export async function getCurriculos() {
   checkSupabaseConfig();
 
@@ -23,6 +69,8 @@ export async function getCurriculos() {
 
 export async function insertCurriculo(curriculo) {
   checkSupabaseConfig();
+  await checkDuplicateEmail(curriculo.email);
+  await checkDuplicatePhone(curriculo.telefone);
 
   const { error } = await supabase.from('curriculos').insert({
     nome: curriculo.nome,
