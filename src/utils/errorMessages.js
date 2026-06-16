@@ -5,7 +5,7 @@ const validationMessages = [
   'Informe um e-mail valido.',
   'Informe um telefone valido.',
   'Informe a experiencia profissional.',
-  'O endereco WEB precisa comecar com http:// ou https://.',
+  'Informe um endereco WEB valido com http:// ou https://.',
   'Ja existe um curriculo com esse e-mail.',
   'Ja existe um curriculo com esse telefone.',
 ];

@@ -1,4 +1,5 @@
 import React from 'react';
+import { formatPhone } from '../utils/formatters';
 
 export function CurriculoDetails({ curriculo }) {
   return (
@@ -10,7 +11,9 @@ export function CurriculoDetails({ curriculo }) {
         <dd className="col-sm-9">{curriculo.nome}</dd>
 
         <dt className="col-sm-3">Telefone</dt>
-        <dd className="col-sm-9">{curriculo.telefone || 'Nao informado'}</dd>
+        <dd className="col-sm-9">
+          {curriculo.telefone ? formatPhone(curriculo.telefone) : 'Nao informado'}
+        </dd>
 
         <dt className="col-sm-3">E-mail</dt>
         <dd className="col-sm-9">{curriculo.email}</dd>

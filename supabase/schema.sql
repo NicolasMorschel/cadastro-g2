@@ -8,6 +8,7 @@ create table if not exists public.curriculos (
   criado_em timestamptz not null default now(),
   constraint curriculos_nome_obrigatorio check (length(trim(nome)) > 0),
   constraint curriculos_email_obrigatorio check (length(trim(email)) > 0),
+  constraint curriculos_email_normalizado check (email = lower(trim(email))),
   constraint curriculos_experiencia_obrigatoria check (length(trim(experiencia)) > 0),
   constraint curriculos_nome_formato check (
     char_length(trim(nome)) >= 2
@@ -18,8 +19,8 @@ create table if not exists public.curriculos (
   constraint curriculos_telefone_formato check (
     telefone is null
     or (
-      telefone ~ '^[0-9()+\-\s]+$'
-      and length(regexp_replace(telefone, '\D', '', 'g')) between 10 and 13
+      telefone ~ '^[0-9]+$'
+      and length(telefone) in (10, 11)
     )
   ),
   constraint curriculos_email_tamanho check (char_length(email) <= 160),
@@ -33,6 +34,43 @@ create table if not exists public.curriculos (
     or endereco_web ~* '^https?://[A-Z0-9.-]+\.[A-Z]{2,}(:[0-9]{1,5})?(/[^\s<>"'']*)?$'
   )
 );
+
+create or replace function public.normalizar_curriculo()
+returns trigger
+language plpgsql
+set search_path = public
+as $$
+begin
+  new.nome = trim(new.nome);
+  new.email = lower(trim(new.email));
+  new.endereco_web = nullif(trim(coalesce(new.endereco_web, '')), '');
+  new.experiencia = trim(new.experiencia);
+
+  if new.telefone is not null and trim(new.telefone) <> '' then
+    if new.telefone !~ '^[0-9()+\-\s]+$' then
+      raise exception 'Telefone invalido.';
+    end if;
+
+    new.telefone = regexp_replace(new.telefone, '\D', '', 'g');
+
+    if length(new.telefone) not in (10, 11) then
+      raise exception 'Telefone invalido.';
+    end if;
+  else
+    new.telefone = null;
+  end if;
+
+  return new;
+end;
+$$;
+
+revoke execute on function public.normalizar_curriculo() from anon, authenticated, public;
+
+drop trigger if exists normalizar_curriculo_before_write on public.curriculos;
+create trigger normalizar_curriculo_before_write
+before insert or update on public.curriculos
+for each row
+execute function public.normalizar_curriculo();
 
 alter table public.curriculos enable row level security;
 
@@ -77,11 +115,12 @@ with check (
   and (
     telefone is null
     or (
-      telefone ~ '^[0-9()+\-\s]+$'
-      and length(regexp_replace(telefone, '\D', '', 'g')) between 10 and 13
+      telefone ~ '^[0-9]+$'
+      and length(telefone) in (10, 11)
     )
   )
   and char_length(email) <= 160
+  and email = lower(trim(email))
   and (endereco_web is null or char_length(endereco_web) <= 200)
   and char_length(experiencia) <= 2000
   and email ~* '^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$'

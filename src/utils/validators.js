@@ -18,8 +18,7 @@ export function isValidPhone(phone) {
   const onlyNumbers = trimmed.replace(/\D/g, '');
 
   return /^[0-9()+\-\s]+$/.test(trimmed)
-    && onlyNumbers.length >= 10
-    && onlyNumbers.length <= 13;
+    && (onlyNumbers.length === 10 || onlyNumbers.length === 11);
 }
 
 export function isSafeWebAddress(value) {

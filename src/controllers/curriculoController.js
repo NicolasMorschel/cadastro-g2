@@ -39,7 +39,7 @@ export function validateCurriculo(form) {
   }
 
   if (!isSafeWebAddress(curriculo.endereco_web)) {
-    return 'O endereco WEB precisa comecar com http:// ou https://.';
+    return 'Informe um endereco WEB valido com http:// ou https://.';
   }
 
   return '';

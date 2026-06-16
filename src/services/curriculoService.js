@@ -74,7 +74,7 @@ export async function insertCurriculo(curriculo) {
 
   const { error } = await supabase.from('curriculos').insert({
     nome: curriculo.nome,
-    telefone: curriculo.telefone || null,
+    telefone: curriculo.telefone ? onlyNumbers(curriculo.telefone) : null,
     email: curriculo.email,
     endereco_web: curriculo.endereco_web || null,
     experiencia: curriculo.experiencia,
