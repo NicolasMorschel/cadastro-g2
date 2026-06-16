@@ -13,17 +13,15 @@ function onlyNumbers(value) {
 async function checkDuplicateEmail(email) {
   const { data, error } = await supabase
     .from('curriculos')
-    .select('id, email');
+    .select('id')
+    .eq('email', email.toLowerCase())
+    .maybeSingle();
 
   if (error) {
     throw error;
   }
 
-  const hasDuplicate = data.some((curriculo) => (
-    curriculo.email.toLowerCase() === email.toLowerCase()
-  ));
-
-  if (hasDuplicate) {
+  if (data) {
     throw new Error('Ja existe um curriculo com esse e-mail.');
   }
 }
@@ -36,18 +34,15 @@ async function checkDuplicatePhone(phone) {
   const phoneNumbers = onlyNumbers(phone);
   const { data, error } = await supabase
     .from('curriculos')
-    .select('id, telefone')
-    .not('telefone', 'is', null);
+    .select('id')
+    .eq('telefone', phoneNumbers)
+    .maybeSingle();
 
   if (error) {
     throw error;
   }
 
-  const hasDuplicate = data.some((curriculo) => (
-    onlyNumbers(curriculo.telefone || '') === phoneNumbers
-  ));
-
-  if (hasDuplicate) {
+  if (data) {
     throw new Error('Ja existe um curriculo com esse telefone.');
   }
 }
