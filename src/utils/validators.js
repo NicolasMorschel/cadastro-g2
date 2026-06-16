@@ -8,6 +8,10 @@ export function isValidName(name) {
   return trimmed.length >= 2 && !/[<>]/.test(trimmed);
 }
 
+export function hasNoHtmlTags(value) {
+  return !/[<>]/.test(value);
+}
+
 export function isValidPhone(phone) {
   const trimmed = phone.trim();
 

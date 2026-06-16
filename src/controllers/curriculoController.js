@@ -1,6 +1,7 @@
 import { normalizeCurriculo } from '../models/curriculoModel';
 import { getCurriculos, insertCurriculo } from '../services/curriculoService';
 import {
+  hasNoHtmlTags,
   isSafeWebAddress,
   isValidEmail,
   isValidName,
@@ -36,6 +37,10 @@ export function validateCurriculo(form) {
 
   if (!curriculo.experiencia) {
     return 'Informe a experiencia profissional.';
+  }
+
+  if (!hasNoHtmlTags(curriculo.experiencia)) {
+    return 'A experiencia profissional nao pode conter tags HTML.';
   }
 
   if (!isSafeWebAddress(curriculo.endereco_web)) {

@@ -10,6 +10,7 @@ create table if not exists public.curriculos (
   constraint curriculos_email_obrigatorio check (length(trim(email)) > 0),
   constraint curriculos_email_normalizado check (email = lower(trim(email))),
   constraint curriculos_experiencia_obrigatoria check (length(trim(experiencia)) > 0),
+  constraint curriculos_experiencia_sem_html check (experiencia !~ '[<>]'),
   constraint curriculos_nome_formato check (
     char_length(trim(nome)) >= 2
     and nome !~ '[<>]'
@@ -110,6 +111,7 @@ with check (
   and nome !~ '[<>]'
   and length(trim(email)) > 0
   and length(trim(experiencia)) > 0
+  and experiencia !~ '[<>]'
   and char_length(nome) <= 120
   and (telefone is null or char_length(telefone) <= 30)
   and (
