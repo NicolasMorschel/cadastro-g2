@@ -26,7 +26,27 @@ export function isValidPhone(phone) {
 }
 
 export function filterPhoneInput(phone) {
-  return phone.replace(/[^0-9()\-\s]/g, '');
+  const numbers = phone.replace(/\D/g, '').slice(0, 11);
+
+  if (!numbers) {
+    return '';
+  }
+
+  if (numbers.length < 3) {
+    return `(${numbers}`;
+  }
+
+  const areaCode = numbers.slice(0, 2);
+  const phoneNumber = numbers.slice(2);
+  const firstPartLength = numbers.length > 10 ? 5 : 4;
+  const firstPart = phoneNumber.slice(0, firstPartLength);
+  const secondPart = phoneNumber.slice(firstPartLength);
+
+  if (secondPart) {
+    return `(${areaCode}) ${firstPart}-${secondPart}`;
+  }
+
+  return `(${areaCode}) ${firstPart}`;
 }
 
 export function isSafeWebAddress(value) {

@@ -23,6 +23,16 @@ export function App() {
     loadCurriculos();
   }, []);
 
+  useEffect(() => {
+    if (!message) {
+      return undefined;
+    }
+
+    const timeoutId = setTimeout(() => setMessage(''), 5000);
+
+    return () => clearTimeout(timeoutId);
+  }, [message]);
+
   async function loadCurriculos() {
     setLoading(true);
 
@@ -35,9 +45,10 @@ export function App() {
     setLoading(false);
   }
 
-  function goToList() {
+  async function goToList() {
     setScreen('list');
     setMessage('');
+    await loadCurriculos();
   }
 
   function goToForm() {
@@ -110,7 +121,7 @@ export function App() {
           </nav>
         </header>
 
-        {message && <div className={`${messageClass} mb-4`}>{message}</div>}
+        {message && <div role="alert" className={`${messageClass} mb-4`}>{message}</div>}
 
         <div className="bg-white border rounded-3 shadow p-3 p-sm-4 p-lg-5">
           {screen === 'list' && (

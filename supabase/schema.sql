@@ -135,6 +135,9 @@ with check (
 create index if not exists curriculos_criado_em_idx
 on public.curriculos (criado_em desc);
 
+create index if not exists curriculos_nome_idx
+on public.curriculos (lower(nome));
+
 create unique index if not exists curriculos_email_unico_idx
 on public.curriculos (lower(email));
 
