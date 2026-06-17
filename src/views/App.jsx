@@ -17,6 +17,7 @@ export function App() {
   const [message, setMessage] = useState('');
   const [curriculos, setCurriculos] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     loadCurriculos();
@@ -51,6 +52,11 @@ export function App() {
     setForm((current) => ({ ...current, [name]: nextValue }));
   }
 
+  function clearForm() {
+    setForm(emptyCurriculo);
+    setMessage('');
+  }
+
   function openDetails(curriculo) {
     setSelected(curriculo);
     setMessage('');
@@ -59,6 +65,7 @@ export function App() {
 
   async function submitForm(event) {
     event.preventDefault();
+    setSaving(true);
 
     try {
       await saveCurriculo(form);
@@ -68,6 +75,8 @@ export function App() {
       setScreen('list');
     } catch (error) {
       setMessage(getSaveErrorMessage(error));
+    } finally {
+      setSaving(false);
     }
   }
 
@@ -117,11 +126,13 @@ export function App() {
               form={form}
               onChange={updateField}
               onSubmit={submitForm}
+              onClear={clearForm}
+              saving={saving}
             />
           )}
 
           {screen === 'details' && selected && (
-            <CurriculoDetails curriculo={selected} />
+            <CurriculoDetails curriculo={selected} onBack={goToList} />
           )}
         </div>
       </div>

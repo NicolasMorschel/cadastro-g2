@@ -53,7 +53,7 @@ export async function getCurriculos() {
   const { data, error } = await supabase
     .from('curriculos')
     .select('id, nome, email, telefone, endereco_web, experiencia, criado_em')
-    .order('criado_em', { ascending: false });
+    .order('nome', { ascending: true });
 
   if (error) {
     throw error;
