@@ -5,6 +5,7 @@ import {
   saveCurriculo,
 } from '../controllers/curriculoController';
 import { getLoadErrorMessage, getSaveErrorMessage } from '../utils/errorMessages';
+import { filterPhoneInput } from '../utils/validators';
 import { CurriculoDetails } from './CurriculoDetails.jsx';
 import { CurriculoForm } from './CurriculoForm.jsx';
 import { CurriculoList } from './CurriculoList.jsx';
@@ -45,7 +46,9 @@ export function App() {
 
   function updateField(event) {
     const { name, value } = event.target;
-    setForm((current) => ({ ...current, [name]: value }));
+    const nextValue = name === 'telefone' ? filterPhoneInput(value) : value;
+
+    setForm((current) => ({ ...current, [name]: nextValue }));
   }
 
   function openDetails(curriculo) {

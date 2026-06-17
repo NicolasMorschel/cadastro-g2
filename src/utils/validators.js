@@ -25,11 +25,19 @@ export function isValidPhone(phone) {
     && (onlyNumbers.length === 10 || onlyNumbers.length === 11);
 }
 
+export function filterPhoneInput(phone) {
+  return phone.replace(/[^0-9()\-\s]/g, '');
+}
+
 export function isSafeWebAddress(value) {
   const trimmed = value.trim();
 
   if (!trimmed) {
     return true;
+  }
+
+  if (/[\s<>"']/.test(trimmed)) {
+    return false;
   }
 
   try {
